@@ -45,7 +45,7 @@ const DateField = props => {
         <input
            type="date"
            id="birthday"
-          
+
            min="1987-01-01" max="2021-12-31"
            onChange={e => props.onChange(e.target.value)}
         />
