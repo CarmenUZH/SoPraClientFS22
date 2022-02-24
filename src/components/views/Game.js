@@ -11,6 +11,7 @@ const Player = ({user}) => (
   <div className="player container">
     <div className="player username">{user.username}</div>
     <div className="player name">{user.name}</div>
+      <div className="player name">{user.birthday}</div>
     <div className="player id">id: {user.id}</div>
   </div>
 );
@@ -79,9 +80,10 @@ const Game = () => {
       <div className="game">
         <ul className="game user-list">
           {users.map(user => (
-            <Player user={user} key={user.id}/>
+            <Player user={user}  key={user.birthday}/>
           ))}
         </ul>
+
         <Button
           width="100%"
           onClick={() => logout()}
@@ -99,6 +101,7 @@ const Game = () => {
         Get all users from secure endpoint:
       </p>
       {content}
+        <img className="game image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5tIe5y2huezAN_WXwX-a4UMTfZw3TZ0nGfQ&usqp=CAU" alt="funny cat"/>
     </BaseContainer>
   );
 }
