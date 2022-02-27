@@ -57,14 +57,14 @@ const DateField = props => {
 
 const Login = props => {
   const history = useHistory();
-  const [name, setName] = useState(null);
-  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [birthday, setBirthday] = useState(null);
 
 
   const doLogin = async () => {
     try {
-      const requestBody = JSON.stringify({username, name, birthday});
+      const requestBody = JSON.stringify({username, password, birthday});
       const response = await api.post('/users', requestBody);
 
       // Get the returned user and update a new object.
@@ -90,9 +90,9 @@ const Login = props => {
             onChange={un => setUsername(un)}
           />
           <FormField
-            label="Name"
-            value={name}
-            onChange={n => setName(n)}
+            label="Password"
+            value={password}
+            onChange={n => setPassword(n)}
           />
           <DateField
               label="Birthday"
@@ -103,7 +103,7 @@ const Login = props => {
 
           <div className="login button-container">
             <Button
-              disabled={!username || !name}
+              disabled={!username || !password}
               width="100%"
               onClick={() => doLogin()}
             >

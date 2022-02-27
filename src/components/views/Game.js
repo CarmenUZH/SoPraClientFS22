@@ -10,8 +10,8 @@ import "styles/views/Game.scss";
 const Player = ({user}) => (
   <div className="player container">
     <div className="player username">{user.username}</div>
-    <div className="player name">{user.name}</div>
-      <div className="player name">{user.birthday}</div>
+    <div className="player password">{user.password}</div>
+      <div className="player birthday">{user.birthday}</div>
     <div className="player id">id: {user.id}</div>
   </div>
 );
