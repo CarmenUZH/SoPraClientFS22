@@ -1,123 +1,149 @@
 import React, {useState} from 'react';
 import {api, handleError} from 'helpers/api';
 import User from 'models/User';
-import {useHistory} from 'react-router-dom';
+import {useHistory, withRouter} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
 import 'styles/views/Login.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-
-
-/*
-It is possible to add multiple components inside a single file,
-however be sure not to clutter your files with an endless amount!
-As a rule of thumb, use one file per component and only add small,
-specific components that belong to the main one in the same file.
- */
-const FormField = props => {
-  return (
-    <div className="login field">
-      <label className="login label">
-        {props.label}
-      </label>
-      <input
-        className="login input"
-        placeholder="enter here.."
-        value={props.value}
-        onChange={e => props.onChange(e.target.value)}
-      />
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func
-};
-
-const DateField = props => {
-  return (
-      <div className="login field">
-        <label className="login label">
-          {props.label}
-        </label>
-        <input
-           type="date"
-           id="birthday"
-
-           min="1987-01-01" max="2021-12-31"
-           onChange={e => props.onChange(e.target.value)}
-        />
-      </div>
-  );
-};
+import styled from 'styled-components';
 
 
 
-const Login = props => {
-  const history = useHistory();
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [birthday, setBirthday] = useState(null);
+const FormContainer = styled.div`
+  margin-top: 2em;
+  display: flex;
+  align-items: center;
+  max-height: 300px;
+  min-width: 45%;
+  height: 90%;
+  float: left;
+  //margin-left: 25%;
+  position: absolute;
+`;
+
+const Form = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 300px;
+  font-size: 16px;
+  font-weight: 300;
+  padding-left: 37px;
+  padding-right: 37px;
+  border-radius: 5px;
+  background-color: rgb(0, 0, 0, 0.8);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+`;
+
+const InputField = styled.input`
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.8);
+  }
+  height: 50px;
+  padding-left: 15px;
+  margin-left: -4px;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255);
+`;
 
 
-  const doLogin = async () => {
-    try {
-      const requestBody = JSON.stringify({username, password, birthday});
-      const response = await api.post('/users', requestBody);
+const ButtonContainer = styled.div`
+  justify-content: center;
+  margin-top: 20px;
+`;
 
-      // Get the returned user and update a new object.
-      const user = new User(response.data);
 
-      // Store the token into the local storage.
-      localStorage.setItem('token', user.token);
 
-      // Login successfully worked --> navigate to the route /game in the GameRouter
-      history.push(`/game`);
-    } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+class Login extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            username: null,
+            password: null
+        };
     }
-  };
 
-  return (
-    <BaseContainer>
-      <div className="login container">
-        <div className="login form">
-          <FormField
-            label="Username"
-            value={username}
-            onChange={un => setUsername(un)}
-          />
-          <FormField
-            label="Password"
-            value={password}
-            onChange={n => setPassword(n)}
-          />
-          <DateField
-              label="Birthday"
-              value={birthday}
-              onChange={b => setBirthday(b)}
-          />
+    async login() {
+        try {
+
+            localStorage.setItem('username', this.state.username);
+
+            const requestBody = JSON.stringify({
+                username: this.state.username,
+                password: this.state.password});
+
+            const response = await api.put('/users', requestBody);
+
+            const user = new User(response.data);
+            // Store the token into the local storage.
+            localStorage.setItem('token', user.token);
+
+            const secondResponse = await api.get('/users/{id}', {headers: {Authorization: localStorage.getItem('token')}});
+
+            const userForUserID = new User(secondResponse.data);
+            localStorage.setItem('id', userForUserID.id);
 
 
-          <div className="login button-container">
-            <Button
-              disabled={!username || !password}
-              width="100%"
-              onClick={() => doLogin()}
-            >
-              Login
-            </Button>
-          </div>
-        </div>
-      </div>
-    </BaseContainer>
-  );
-};
+            // Login successfully worked --> navigate to the route /game in the GameRouter
+            this.props.history.push(`/game`);
+        } catch (error) {
+            alert(`Something went wrong during the login: \n${handleError(error)}`);
+        }
+    }
+
+    handleInputChange(key, value) {
+        this.setState({[key]: value});
+    }
+
+    componentDidMount() {}
+
+
+    render() {
+        return (
+            <BaseContainer>
+                <FormContainer>
+                    <img className="game image" src="https://64.media.tumblr.com/14dfbcddfa48a39c19d1ff1c192b48e2/3a199dbf6c11948d-c7/s500x750/576cb9bfe0a3c1d489ef5872b540ae8cffa96cd8.png" float="left" height="350px" alt="funny cat"/>
+
+                    <Form>
+                        <InputField
+                            placeholder="Username"
+                            onChange={e => {
+                                this.handleInputChange('username', e.target.value);
+                            }}
+                        />
+                        <InputField
+                            placeholder="Password"
+                            onChange={e => {
+                                this.handleInputChange('password', e.target.value);
+                            }}
+                        />
+                        <ButtonContainer>
+                            <Button
+                                disabled={!this.state.username || !this.state.password}
+                                width="100%"
+                                style={{color: "black"}}
+                                onClick={() => {
+                                    this.login();
+                                }}
+                            >
+                                Login
+                            </Button>
+                        </ButtonContainer>
+                    </Form>
+                </FormContainer>
+            </BaseContainer>
+        );
+    }
+}
+
+
 
 /**
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default Login;
+export default withRouter(Login);
