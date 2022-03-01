@@ -6,6 +6,7 @@ export const api = axios.create({
   headers: { 'Content-Type': 'application/json' }
 });
 
+//Ask the tutors to explain the api
 export const handleError = error => {
   const response = error.response;
 

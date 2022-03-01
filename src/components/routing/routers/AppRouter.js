@@ -13,6 +13,8 @@ import Login from "components/views/Login";
  * /game renders a Router that contains other sub-routes that render in turn other react components
  * Documentation about routing in React: https://reacttraining.com/react-router/web/guides/quick-start
  */
+
+//TODO: Add homepage before it goes to login/register
 const AppRouter = () => {
   return (
     <Router>

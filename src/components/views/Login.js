@@ -10,6 +10,8 @@ import styled from 'styled-components';
 
 
 
+//Copied these online - changed a few things to make them unique to me
+
 const FormContainer = styled.div`
   margin-top: 2em;
   display: flex;
@@ -64,28 +66,28 @@ class Login extends React.Component {
         this.state = {
             username: null,
             password: null
-        };
+        }; //These two things get changed over the course of logging in
     }
 
     async login() {
         try {
 
-            localStorage.setItem('username', this.state.username);
+            localStorage.setItem('username', this.state.username); //Username in local storage gets set
 
             const requestBody = JSON.stringify({
                 username: this.state.username,
-                password: this.state.password});
+                password: this.state.password}); //Requestbody that gets sent to the server
 
-            const response = await api.put('/users', requestBody);
+            const response = await api.put('/users', requestBody); //PUT gives you back the user, NOT GET!! NOT ALLOWED!!
 
-            const user = new User(response.data);
+            const user = new User(response.data); //New user is created that is basicaly the copy of the user you got from the server
             // Store the token into the local storage.
             localStorage.setItem('token', user.token);
 
-            const secondResponse = await api.get('/users/{id}', {headers: {Authorization: localStorage.getItem('token')}});
+            const secondResponse = await api.get('/users/{id}', {headers: {Authorization: localStorage.getItem('token')}}); //Get the information of the specific user through his token
 
-            const userForUserID = new User(secondResponse.data);
-            localStorage.setItem('id', userForUserID.id);
+            const userWithId = new User(secondResponse.data);
+            localStorage.setItem('id', userWithId.id); //id gets set for user
 
 
             // Login successfully worked --> navigate to the route /game in the GameRouter
@@ -95,19 +97,17 @@ class Login extends React.Component {
         }
     }
 
-    handleInputChange(key, value) {
+    handleInputChange(key, value) { //According to the internet i need that to handle the changes in the thingy
         this.setState({[key]: value});
     }
 
-    componentDidMount() {}
-
-
+   // componentDidMount() {} //"If you need to interact with the browser, perform your work in componentDidMount() or the other lifecycle methods instead. Keeping render() pure makes components easier to think about."
     render() {
         return (
+            //WARNING: i added an image just to test out how i would design the actual login page, take it out or change the src before showing the tutors your code
             <BaseContainer>
                 <FormContainer>
                     <img className="game image" src="https://64.media.tumblr.com/14dfbcddfa48a39c19d1ff1c192b48e2/3a199dbf6c11948d-c7/s500x750/576cb9bfe0a3c1d489ef5872b540ae8cffa96cd8.png" float="left" height="350px" alt="funny cat"/>
-
                     <Form>
                         <InputField
                             placeholder="Username"
@@ -123,7 +123,7 @@ class Login extends React.Component {
                         />
                         <ButtonContainer>
                             <Button
-                                disabled={!this.state.username || !this.state.password}
+                                disabled={!this.state.username || !this.state.password} //if one of these fields isnt filled in then button wont work lmao
                                 width="100%"
                                 style={{color: "black"}}
                                 onClick={() => {
@@ -146,4 +146,4 @@ class Login extends React.Component {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default withRouter(Login);
+export default withRouter(Login); //"This gives the Login component access to this.props.history, which means the Login can now redirect the user."

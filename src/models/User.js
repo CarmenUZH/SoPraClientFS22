@@ -10,7 +10,7 @@ class User {
     this.logintime=null;
     this.token = null;
     this.status = null;
-    Object.assign(this, data);
+    Object.assign(this, data); //assigns User the thingys
   }
 }
 export default User;

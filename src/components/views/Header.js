@@ -11,9 +11,12 @@ import "styles/views/Header.scss";
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
+
+//TODO: REMOVE THE IMAGE BEFORE THE TUTORS FIND IT
 const Header = props => (
   <div className="header container" style={{height: props.height}}>
-    <h1 className="header title">SoPra FS22 rocks with React!</h1>
+    <img height="60px" src="https://toppng.com/public/uploads/thumbnail/meme-emoji-discord-emoji-dank-discord-emoji-funny-laughing-emoji-11553546508a3wugidrkt.png"/>
+      <h1 className="header title">This is my Website! Welcome!!</h1>
     <ReactLogo width="60px" height="60px"/>
   </div>
 );

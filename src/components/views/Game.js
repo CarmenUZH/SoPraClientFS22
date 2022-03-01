@@ -13,7 +13,7 @@ const Player = ({user}) => (
     <div className="player password">{user.password}</div>
       <div className="player birthday">{user.birthday}</div>
     <div className="player id">id: {user.id}</div>
-  </div>
+  </div> //added birthday
 );
 
 Player.propTypes = {
