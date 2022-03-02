@@ -4,7 +4,7 @@
   &.container {
    max-width: 1000px;
     min-width:300px;
-    min-height: 300px;
+    height: fit-content;
 
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
@@ -16,7 +16,7 @@
     justify-content: center;
     width: 60%;
     max-width: 30em;
-    height: 30em;
+    height: fit-content;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
@@ -50,6 +50,7 @@
   &.button-container {
     display: flex;
     justify-content: center;
-    margin-top: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
   }
 }

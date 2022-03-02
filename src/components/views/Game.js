@@ -9,16 +9,29 @@ import "styles/views/Game.scss";
 
 const Player = ({user}) => (
   <div className="player container">
-    <div className="player username">{user.username}</div>
-    <div className="player password">{user.password}</div>
-      <div className="player birthday">{user.birthday}</div>
+    <div style={{cursor:"crosshair"}} className="player username" onClick={() => sayHello(user.username)}>{user.username}</div>
     <div className="player id">id: {user.id}</div>
-  </div> //added birthday
+  </div> //removed birthday and password
 );
 
 Player.propTypes = {
   user: PropTypes.object
 };
+
+
+
+function sayHello(username) { //you have to make it this way if you dont want the page to defaut
+       // e.preventDefault();
+        console.log(username);
+    }
+
+
+
+/* <a href="#" onClick={handleClick}>
+            Click me
+        </a>
+        */
+
 
 const Game = () => {
   // use react-router-dom's hook to access the history
@@ -33,7 +46,7 @@ const Game = () => {
 
   const logout = () => {
     localStorage.removeItem('token');
-    history.push('/login');
+    history.push('/start');
   }
 
   // the effect hook can be used to react to change in your component.
@@ -80,9 +93,13 @@ const Game = () => {
       <div className="game">
         <ul className="game user-list">
           {users.map(user => (
-            <Player user={user}  key={user.birthday}/>
+            <Player
+                user={user}
+                key={user.birthday}  />
           ))}
+
         </ul>
+
 
         <Button
           width="100%"
