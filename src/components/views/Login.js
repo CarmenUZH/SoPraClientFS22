@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {api, handleError} from 'helpers/api';
 import User from 'models/User';
-import {useHistory, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
 import 'styles/views/Login.scss';
 import BaseContainer from "components/ui/BaseContainer";
-import PropTypes from "prop-types";
 import styled from 'styled-components';
 
 

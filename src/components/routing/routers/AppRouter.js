@@ -2,9 +2,11 @@ import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom
 import {GameGuard} from "components/routing/routeProtectors/GameGuard";
 import GameRouter from "components/routing/routers/GameRouter";
 import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
-import Login from "components/views/Login";
 import Start from "components/views/Start";
+import Login from "components/views/Login";
 import Register from "../../views/Register";
+import Profile from "../../views/Profile";
+//import {StartGuard} from "../routeProtectors/StartGuard";
 
 /**
  * Main router of your application.
@@ -17,26 +19,30 @@ import Register from "../../views/Register";
  */
 
 //TODO: Add homepage before it goes to login/register
+    //Why does it still not START at the homepage?
 const AppRouter = () => {
   return (
     <Router>
       <Switch>
-        <Route exact path="/start">
-          <LoginGuard>
-            <Start/>
-          </LoginGuard>
+
+          <Route exact path="/register">
+              <LoginGuard>
+                  <Register/>
+              </LoginGuard>
+          </Route>
+
+        <Route path="/start">
+         <Start />
         </Route>
 
-        <Route exact path="/login">
+        <Route path="/login">
           <LoginGuard>
             <Login/>
           </LoginGuard>
         </Route>
 
-        <Route exact path="/register">
-          <LoginGuard>
-            <Register/>
-          </LoginGuard>
+        <Route path="/profile">
+            <Profile/>
         </Route>
 
         <Route path="/game">
@@ -45,7 +51,7 @@ const AppRouter = () => {
           </GameGuard>
         </Route>
         <Route exact path="/">
-          <Redirect to="/login"/>
+          <Redirect to="/start"/>
         </Route>
       </Switch>
     </Router>
