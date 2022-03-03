@@ -9,15 +9,7 @@ import "styles/views/Game.scss";
 
 
 
-
-
-
-
-/* <a href="#" onClick={handleClick}>
-            Click me
-        </a>
-        */
-
+//TODO remove unnecessary console logs for savety!!!!
 
 const Game = () => {
   // use react-router-dom's hook to access the history
