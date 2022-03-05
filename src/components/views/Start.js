@@ -17,7 +17,6 @@ specific components that belong to the main one in the same file.
 const Start = () => {
     const history = useHistory();
 
-
     return (
         <BaseContainer>
             <div className="login container">

@@ -6,6 +6,7 @@ import Start from "components/views/Start";
 import Login from "components/views/Login";
 import Register from "../../views/Register";
 import Profile from "../../views/Profile";
+import Change from "../../views/Change";
 //import {StartGuard} from "../routeProtectors/StartGuard";
 
 /**
@@ -26,13 +27,11 @@ const AppRouter = () => {
       <Switch>
 
           <Route exact path="/register">
-              <LoginGuard>
                   <Register/>
-              </LoginGuard>
           </Route>
 
         <Route path="/start">
-         <Start />
+                <Start />
         </Route>
 
         <Route path="/login">
@@ -42,8 +41,17 @@ const AppRouter = () => {
         </Route>
 
         <Route path="/profile">
+            <GameGuard>
             <Profile/>
+                </GameGuard>
         </Route>
+
+
+          <Route path="/change">
+              <GameGuard>
+                  <Change/>
+              </GameGuard>
+          </Route>
 
         <Route path="/game">
           <GameGuard>

@@ -4,11 +4,15 @@ import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Game.scss";
+import {useState} from "react";
 
 
 
 const Profile = () => {
     const history = useHistory();
+    const [birthday, setBirthday] = useState(localStorage.getItem('tem')); //wir brauchen den set scheiss um all das zu uptaden
+
+
     const logout = () => {
         localStorage.removeItem('profile');
         history.push('/game');
@@ -22,11 +26,10 @@ const Profile = () => {
         content = (
             <div className="game">
                 <ul className="game user-list">
-                    <div style={{cursor:"crosshair", padding:"1em"}} className="player username" >{puser.username}</div>
-                    <div className="player id">id: {puser.id}</div>
-                    <div className="player id">birthday: {puser.birthday}</div>
-                    <div className="player id">login: {puser.logintime}</div>
-                    <div className="player id">status: {puser.status}</div>
+                    <div style={{cursor:"crosshair", padding:"1em"}} className="player username" >Username: {puser.username}</div>
+                    <div className="player id">Birthday: {birthday} </div>
+                    <div className="player id">Creation date: {puser.logintime}</div>
+                    <div className="player id">Status: {puser.status}</div>
                 </ul>
 
 

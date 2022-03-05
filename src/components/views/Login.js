@@ -80,16 +80,11 @@ class Login extends React.Component {
             const response = await api.put('/users', requestBody); //PUT gives you back the user, NOT GET!! NOT ALLOWED!!
 
             const user = new User(response.data); //New user is created that is basicaly the copy of the user you got from the server
-            // Store the token into the local storage.
             localStorage.setItem('token', user.token);
 
-            const secondResponse = await api.get('/users/{id}', {headers: {Authorization: localStorage.getItem('token')}}); //Get the information of the specific user through his token
-
-            const userWithId = new User(secondResponse.data);
-            localStorage.setItem('id', userWithId.id); //id gets set for user
 
 
-            // Login successfully worked --> navigate to the route /game in the GameRouter
+            // Login successfully worked --> navigate to the route /game in the AppRouter
             this.props.history.push(`/game`);
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);

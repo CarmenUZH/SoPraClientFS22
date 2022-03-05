@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Game.scss";
+import User from "../../models/User";
 
 
 
@@ -30,35 +31,73 @@ const Game = () => {
 
     function toprofile(person) { //you have to make it this way if you dont want the page to defaut
 
+
         // e.preventDefault();
         localStorage.setItem('profile', JSON.stringify(person));
-        localStorage.setItem('profileusername', person.username);
-        localStorage.setItem('profilepassword', person.password);
         console.log(person.username);
-        console.log(localStorage.getItem('profile')) //The token of the profile i clicked on
-        console.log(localStorage.getItem('token')) //The token of the logged-in user
-        history.push('/profile');
+        if(person.token !== localStorage.getItem('token')){
+
+        history.push('/profile');}
+        else{ //basically, ein eingeloggter user kann sein Profil nur bearbeiten, nicht sehen wie die anderen
+            localStorage.setItem('tem',person.birthday)
+            change();
+        }
     }
 
 
-
-    // define a state variable (using the state hook).
-  // if this variable changes, the component will re-render, but the variable will
-  // keep its value throughout render cycles.
-  // a component can have as many state variables as you like.
-  // more information can be found under https://reactjs.org/docs/hooks-state.html
   const [users, setUsers] = useState(null);
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    history.push('/start');
+  const logout = async () => {
+      console.log('testing log')
+      //We first get the logged in user with his token, then we log him out
+
+      const requestLogged = JSON.stringify({
+          token: localStorage.getItem('token')}); //We have to stringify Requests for api
+
+      const response= await api.put('/users/' + localStorage.getItem('token'),requestLogged)
+      const logged = new User(response.data); //New user is created that is basicaly the copy of the user you got from the server
+      console.log(logged.username);
+
+
+      const requestBody = JSON.stringify({
+          username: logged.username,
+          password: logged.password}); //This seems really unsave - ask Tutors about it!
+
+      await api.put('/users/' + localStorage.getItem('token') + '/logout',requestBody);
+      localStorage.removeItem('token');
+      history.push('/start');
   }
 
-  // the effect hook can be used to react to change in your component.
-  // in this case, the effect hook is only run once, the first time the component is mounted
-  // this can be achieved by leaving the second argument an empty array.
-  // for more information on the effect hook, please see https://reactjs.org/docs/hooks-effect.html
-  useEffect(() => {
+
+
+    const change = async () => {
+        console.log('testing change')
+        //We first get the logged in user with his token, then we log him out
+
+        const requestLogged = JSON.stringify({
+            token: localStorage.getItem('token')}); //We have to stringify Requests for api
+
+        const response= await api.put('/users/' + localStorage.getItem('token'),requestLogged)
+        const logged = new User(response.data); //New user is created that is basicaly the copy of the user you got from the server
+        localStorage.setItem('changer', JSON.stringify(logged));
+
+        const requestUser = JSON.stringify({
+            token: localStorage.getItem('token')
+        });
+        const burthday =  await api.put('/users/' + localStorage.getItem('token'), requestUser)
+        const birthdayuser = new User(burthday.data);
+        localStorage.setItem('tem',birthdayuser.birthday);
+
+        if(localStorage.getItem('profile')==null){
+            localStorage.setItem('profile', JSON.stringify(birthdayuser));
+        }
+
+        console.log(localStorage.getItem("tem"))
+        await history.push('/change');
+    }
+
+
+    useEffect(() => {
     // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
     async function fetchData() {
       try {
@@ -85,7 +124,7 @@ const Game = () => {
   }, []);
 
   let content = <Spinner/>;
-
+//Each user gets mapped to one of the player things
   if (users) {
     content = (
       <div className="game">
@@ -98,6 +137,13 @@ const Game = () => {
 
         </ul>
 
+
+          <Button
+              width="100%"
+              onClick={() => change()}
+          >
+              Manage Profile
+          </Button>
 
         <Button
           width="100%"

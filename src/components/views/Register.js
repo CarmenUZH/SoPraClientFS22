@@ -8,6 +8,8 @@ import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 
 
+//TODO: Herausfinden wie die Leute Online werden
+
 /*
 It is possible to add multiple components inside a single file,
 however be sure not to clutter your files with an endless amount!
@@ -36,22 +38,7 @@ FormField.propTypes = {
     onChange: PropTypes.func
 };
 
-const DateField = props => {
-    return (
-        <div className="login field">
-            <label className="login label">
-                {props.label}
-            </label>
-            <input
-                type="date"
-                id="birthday"
 
-                min="1987-01-01" max="2021-12-31"
-                onChange={e => props.onChange(e.target.value)}
-            />
-        </div>
-    );
-};
 
 
 
@@ -59,12 +46,12 @@ const Register = props => {
     const history = useHistory();
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
-    const [birthday, setBirthday] = useState(null);
+
 
 
     const doLogin = async () => {
         try {
-            const requestBody = JSON.stringify({username, password, birthday});
+            const requestBody = JSON.stringify({username, password});
             const response = await api.post('/users', requestBody);
 
             // Get the returned user and update a new object.
@@ -94,11 +81,7 @@ const Register = props => {
                         value={password}
                         onChange={n => setPassword(n)}
                     />
-                    <DateField
-                        label="Birthday"
-                        value={birthday}
-                        onChange={b => setBirthday(b)}
-                    />
+
 
 
                     <div className="login button-container">
