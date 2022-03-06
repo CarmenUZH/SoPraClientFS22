@@ -28,26 +28,18 @@ const Game = () => {
         user: PropTypes.object
     };
 
-
     function toprofile(person) { //you have to make it this way if you dont want the page to defaut
-
-
         // e.preventDefault();
         localStorage.setItem('profile', JSON.stringify(person));
-        console.log(person.username);
-        if(person.token !== localStorage.getItem('token')){
+        localStorage.setItem('tem',person.birthday)
+        localStorage.setItem('nem',person.username)
+        history.push('/profile');
 
-        history.push('/profile');}
-        else{ //basically, ein eingeloggter user kann sein Profil nur bearbeiten, nicht sehen wie die anderen
-            localStorage.setItem('tem',person.birthday)
-            change();
-        }
     }
-
 
   const [users, setUsers] = useState(null);
 
-  const logout = async () => {
+    const logout = async () => {
       console.log('testing log')
       //We first get the logged in user with his token, then we log him out
 
@@ -65,37 +57,9 @@ const Game = () => {
 
       await api.put('/users/' + localStorage.getItem('token') + '/logout',requestBody);
       localStorage.removeItem('token');
+      localStorage.removeItem('tem');
       history.push('/start');
   }
-
-
-
-    const change = async () => {
-        console.log('testing change')
-        //We first get the logged in user with his token, then we log him out
-
-        const requestLogged = JSON.stringify({
-            token: localStorage.getItem('token')}); //We have to stringify Requests for api
-
-        const response= await api.put('/users/' + localStorage.getItem('token'),requestLogged)
-        const logged = new User(response.data); //New user is created that is basicaly the copy of the user you got from the server
-        localStorage.setItem('changer', JSON.stringify(logged));
-
-        const requestUser = JSON.stringify({
-            token: localStorage.getItem('token')
-        });
-        const burthday =  await api.put('/users/' + localStorage.getItem('token'), requestUser)
-        const birthdayuser = new User(burthday.data);
-        localStorage.setItem('tem',birthdayuser.birthday);
-
-        if(localStorage.getItem('profile')==null){
-            localStorage.setItem('profile', JSON.stringify(birthdayuser));
-        }
-
-        console.log(localStorage.getItem("tem"))
-        await history.push('/change');
-    }
-
 
     useEffect(() => {
     // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
@@ -137,14 +101,6 @@ const Game = () => {
 
         </ul>
 
-
-          <Button
-              width="100%"
-              onClick={() => change()}
-          >
-              Manage Profile
-          </Button>
-
         <Button
           width="100%"
           onClick={() => logout()}
@@ -157,9 +113,9 @@ const Game = () => {
 
   return (
     <BaseContainer className="game container">
-      <h2>Happy Coding!</h2>
+      <h2>User Overview</h2>
       <p className="game paragraph">
-        Get all users from secure endpoint:
+        Click on a username to see the profile
       </p>
       {content}
         <img className="game image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5tIe5y2huezAN_WXwX-a4UMTfZw3TZ0nGfQ&usqp=CAU" alt="funny cat"/>

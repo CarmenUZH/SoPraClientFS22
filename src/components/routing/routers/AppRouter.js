@@ -7,6 +7,8 @@ import Login from "components/views/Login";
 import Register from "../../views/Register";
 import Profile from "../../views/Profile";
 import Change from "../../views/Change";
+import {StartGuard} from "../routeProtectors/StartGuard";
+import OwnProfile from "../../views/OwnProfile";
 //import {StartGuard} from "../routeProtectors/StartGuard";
 
 /**
@@ -45,6 +47,12 @@ const AppRouter = () => {
             <Profile/>
                 </GameGuard>
         </Route>
+
+          <Route path="/ownprofile">
+              <StartGuard>
+                  <OwnProfile/>
+              </StartGuard>
+          </Route>
 
 
           <Route path="/change">

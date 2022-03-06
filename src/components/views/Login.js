@@ -6,6 +6,7 @@ import {Button} from 'components/ui/Button';
 import 'styles/views/Login.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import styled from 'styled-components';
+import PropTypes from "prop-types";
 
 
 
@@ -38,18 +39,27 @@ const Form = styled.div`
   transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 
-const InputField = styled.input`
-  &::placeholder {
-    color: rgba(0, 0, 0, 0.8);
-  }
-  height: 50px;
-  padding-left: 15px;
-  margin-left: -4px;
-  border: none;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255);
-`;
+const FormField = props => {
+    return (
+        <div className="login fieldlogin">
+            <label className="login label">
+                {props.label}
+            </label>
+            <input
+                className="login input"
+                placeholder="enter here.."
+                value={props.value}
+                onChange={e => props.onChange(e.target.value)}
+            />
+        </div>
+    );
+};
+
+FormField.propTypes = {
+    label: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func
+};
 
 
 const ButtonContainer = styled.div`
@@ -103,13 +113,15 @@ class Login extends React.Component {
                 <FormContainer>
                     <img className="game image" src="https://64.media.tumblr.com/14dfbcddfa48a39c19d1ff1c192b48e2/3a199dbf6c11948d-c7/s500x750/576cb9bfe0a3c1d489ef5872b540ae8cffa96cd8.png" float="left" height="350px" alt="funny cat"/>
                     <Form>
-                        <InputField
+                        <FormField
+                            label="Username"
                             placeholder="Username"
                             onChange={e => {
                                 this.handleInputChange('username', e.target.value);
                             }}
                         />
-                        <InputField
+                        <FormField
+                            label="Password"
                             placeholder="Password"
                             onChange={e => {
                                 this.handleInputChange('password', e.target.value);

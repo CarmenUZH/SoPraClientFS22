@@ -72,17 +72,15 @@ const Register = props => {
             <div className="login container">
                 <div className="login form">
                     <FormField
-                        label="Username"
+                        label="Create Username"
                         value={username}
                         onChange={un => setUsername(un)}
                     />
                     <FormField
-                        label="Password"
+                        label="create password"
                         value={password}
                         onChange={n => setPassword(n)}
                     />
-
-
 
                     <div className="login button-container">
                         <Button
@@ -90,7 +88,7 @@ const Register = props => {
                             width="100%"
                             onClick={() => doLogin()}
                         >
-                            Login
+                            Create Profile
                         </Button>
                     </div>
                 </div>

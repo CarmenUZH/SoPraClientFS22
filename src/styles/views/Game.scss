@@ -10,12 +10,14 @@
 .game {
   &.container {
     background: $background;
-    padding: 100px;
+    padding: 50px;
     border-radius: $borderRadius;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     box-shadow: $dropShadow;
+    @include center;
   }
   &.user-list {
     list-style: none;

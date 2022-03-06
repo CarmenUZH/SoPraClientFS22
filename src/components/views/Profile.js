@@ -4,15 +4,41 @@ import {Button} from 'components/ui/Button';
 import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Game.scss";
-import {useState} from "react";
+import {api} from "../../helpers/api";
+import User from "../../models/User";
+
 
 
 
 const Profile = () => {
     const history = useHistory();
-    const [birthday, setBirthday] = useState(localStorage.getItem('tem')); //wir brauchen den set scheiss um all das zu uptaden
+    //const [birthday, setBirthday] = useState(localStorage.getItem('tem')); //wir brauchen den set scheiss um all das zu uptaden
 
+    const change = async () => {
+        console.log('testing change')
+        //We first get the logged in user with his token, then we log him out
 
+        const requestLogged = JSON.stringify({
+            token: localStorage.getItem('token')}); //We have to stringify Requests for api
+
+        const response= await api.put('/users/' + localStorage.getItem('token'),requestLogged)
+        const logged = new User(response.data); //New user is created that is basicaly the copy of the user you got from the server
+        localStorage.setItem('changer', JSON.stringify(logged));
+
+        const requestUser = JSON.stringify({
+            token: localStorage.getItem('token')
+        });
+        const burthday =  await api.put('/users/' + localStorage.getItem('token'), requestUser)
+        const birthdayuser = new User(burthday.data);
+        localStorage.setItem('tem',birthdayuser.birthday);
+        localStorage.setItem('nem',birthdayuser.username)
+
+        if(localStorage.getItem('profile')==null){
+            localStorage.setItem('profile', JSON.stringify(birthdayuser));
+        }
+
+        await history.push('/change');
+    }
     const logout = () => {
         localStorage.removeItem('profile');
         history.push('/game');
@@ -27,11 +53,19 @@ const Profile = () => {
             <div className="game">
                 <ul className="game user-list">
                     <div style={{cursor:"crosshair", padding:"1em"}} className="player username" >Username: {puser.username}</div>
-                    <div className="player id">Birthday: {birthday} </div>
+                    <div className="player id">Birthday: {puser.birthday} </div>
                     <div className="player id">Creation date: {puser.logintime}</div>
                     <div className="player id">Status: {puser.status}</div>
                 </ul>
-
+                <br/>
+                <Button
+                    disabled={localStorage.getItem('token')!==puser.token}
+                    width="100%"
+                    onClick={() => change()}
+                >
+                    Manage Profile
+                </Button>
+                <br/>
 
                 <Button
                     width="100%"
