@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {api, handleError} from 'helpers/api';
 import User from 'models/User';
-import {withRouter} from 'react-router-dom';
+import {useHistory, withRouter} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
 import 'styles/views/Login.scss';
 import BaseContainer from "components/ui/BaseContainer";
@@ -69,84 +69,66 @@ const ButtonContainer = styled.div`
 
 
 
-class Login extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            username: null,
-            password: null
-        }; //These two things get changed over the course of logging in
-    }
+const Login = props => {
+    const history = useHistory();
+    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
 
-    async login() {
+
+
+    const doLogin = async () => {
         try {
-
-            localStorage.setItem('username', this.state.username); //Username in local storage gets set
-
             const requestBody = JSON.stringify({
-                username: this.state.username,
-                password: this.state.password}); //Requestbody that gets sent to the server
+                username,
+                password
+            });//Requestbody that gets sent to the server
 
             const response = await api.put('/users', requestBody); //PUT gives you back the user, NOT GET!! NOT ALLOWED!!
 
-            const user = new User(response.data); //New user is created that is basicaly the copy of the user you got from the server
-            localStorage.setItem('token', user.token);
+            // Get the returned user and update a new object.
+            const user = new User(response.data);
+            console.log(user)
+            // Store the token into the local storage.
+            localStorage.setItem('userid', user.userId);
 
-
-
-            // Login successfully worked --> navigate to the route /game in the AppRouter
-            this.props.history.push(`/game`);
+            // Login successfully worked --> navigate to the route /game in the GameRouter
+            history.push(`/game`);
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
         }
-    }
+    };
 
-    handleInputChange(key, value) { //According to the internet i need that to handle the changes in the thingy
-        this.setState({[key]: value});
-    }
+return (
+    <BaseContainer>
+        <div className="login container">
+            <div className="login form">
+                <img className="game image" src="https://t3.ftcdn.net/jpg/03/74/30/62/360_F_374306203_SMTL4De1OOWASFLtO0tkmXvEatxwf4Ry.jpg" float="left" height="150px" style={{marginTop:"6px"}} alt="funny cat"/>
 
-   // componentDidMount() {} //"If you need to interact with the browser, perform your work in componentDidMount() or the other lifecycle methods instead. Keeping render() pure makes components easier to think about."
-    render() {
-        return (
-            //WARNING: i added an image just to test out how i would design the actual login page, take it out or change the src before showing the tutors your code
-            <BaseContainer>
-                <FormContainer>
-                    <img className="game image" src="https://64.media.tumblr.com/14dfbcddfa48a39c19d1ff1c192b48e2/3a199dbf6c11948d-c7/s500x750/576cb9bfe0a3c1d489ef5872b540ae8cffa96cd8.png" float="left" height="350px" alt="funny cat"/>
-                    <Form>
-                        <FormField
-                            label="Username"
-                            placeholder="Username"
-                            onChange={e => {
-                                this.handleInputChange('username', e.target.value);
-                            }}
-                        />
-                        <FormField
-                            label="Password"
-                            placeholder="Password"
-                            onChange={e => {
-                                this.handleInputChange('password', e.target.value);
-                            }}
-                        />
-                        <ButtonContainer>
-                            <Button
-                                disabled={!this.state.username || !this.state.password} //if one of these fields isnt filled in then button wont work lmao
-                                width="100%"
-                                style={{color: "black"}}
-                                onClick={() => {
-                                    this.login();
-                                }}
-                            >
-                                Login
-                            </Button>
-                        </ButtonContainer>
-                    </Form>
-                </FormContainer>
-            </BaseContainer>
-        );
-    }
-}
+                <FormField
+                    label="Ender Username"
+                    value={username}
+                    onChange={un => setUsername(un)}
+                />
+                <FormField
+                    label="Enter password"
+                    value={password}
+                    onChange={n => setPassword(n)}
+                />
 
-
+                <div className="login button-container">
+                    <Button
+                        disabled={!username || !password}
+                        width="100%"
+                        onClick={() => doLogin()}
+                    >
+                        Login
+                    </Button>
+                </div>
+            </div>
+        </div>
+    </BaseContainer>
+);
+};
 
 /**
  * You can get access to the history object's properties via the withRouter.

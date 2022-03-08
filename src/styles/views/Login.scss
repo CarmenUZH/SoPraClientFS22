@@ -36,6 +36,15 @@
     margin-bottom: 15px;
     margin-top: 15px;
   }
+  &.fieldzwei {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    float: right;
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
 
   &.fieldlogin {
     display: flex;
@@ -79,6 +88,7 @@
     margin-bottom: 10px;
     text-transform: lowercase;
     font-weight: 300;
+
   }
   &.button-container {
     display: flex;

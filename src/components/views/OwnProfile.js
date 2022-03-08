@@ -19,6 +19,17 @@ const OwnProfile = () => {
         history.push('/game');
     }
 
+    const logstat = () => {
+        let log
+        if (puser.logged_in === true){
+            log = "ONLINE"
+        }
+        else{
+            log = "OFFLINE"
+        }
+        return log
+    }
+
     const puser = JSON.parse(localStorage.getItem("profile")); //localstorage kann nur strings speicher, objects müssen so umgeschreiben werden
 
     let content = <Spinner/>;
@@ -27,10 +38,11 @@ const OwnProfile = () => {
         content = (
             <div className="game">
                 <ul className="game user-list">
-                    <div style={{cursor:"crosshair", padding:"1em"}} className="player username" >Username: {username}</div>
+                    <div style={{ padding:"1em"}} className="player username" >Username: {username}</div>
+                    <div style={{ padding:"1em",color:"lightblue",float:"right"}} className="player username" >id: {puser.id}</div>
                     <div className="player id">Birthday: {birthday} </div>
-                    <div className="player id">Creation date: {puser.logintime}</div>
-                    <div className="player id">Status: {puser.status}</div>
+                    <div className="player id">Creation date: {puser.creation_date}</div>
+                    <div className="player id">Status: {logstat()}</div>
                 </ul>
 
 
@@ -48,7 +60,6 @@ const OwnProfile = () => {
         <BaseContainer className="game container">
             <h2>PROFILE</h2>
             {content}
-            <img className="game image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5tIe5y2huezAN_WXwX-a4UMTfZw3TZ0nGfQ&usqp=CAU" alt="funny cat"/>
         </BaseContainer>
     );
 }

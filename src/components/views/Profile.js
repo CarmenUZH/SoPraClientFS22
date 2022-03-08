@@ -14,52 +14,53 @@ const Profile = () => {
     const history = useHistory();
     //const [birthday, setBirthday] = useState(localStorage.getItem('tem')); //wir brauchen den set scheiss um all das zu uptaden
 
+    const puser = (JSON.parse(localStorage.getItem('profile'))); //localstorage kann nur strings speicher, objects müssen so umgeschreiben werden
+    const currentid = puser.userId;
+
     const change = async () => {
         console.log('testing change')
-        //We first get the logged in user with his token, then we log him out
 
-        const requestLogged = JSON.stringify({
-            token: localStorage.getItem('token')}); //We have to stringify Requests for api
+        const requestBody = JSON.stringify({
+            username: puser.username}); //We have to stringify Requests for api
 
-        const response= await api.put('/users/' + localStorage.getItem('token'),requestLogged)
+        console.log(requestBody)
+        const response= await api.get( '/users/' + localStorage.getItem( "userid") ,requestBody);
         const logged = new User(response.data); //New user is created that is basicaly the copy of the user you got from the server
         localStorage.setItem('changer', JSON.stringify(logged));
 
-        const requestUser = JSON.stringify({
-            token: localStorage.getItem('token')
-        });
-        const burthday =  await api.put('/users/' + localStorage.getItem('token'), requestUser)
-        const birthdayuser = new User(burthday.data);
-        localStorage.setItem('tem',birthdayuser.birthday);
-        localStorage.setItem('nem',birthdayuser.username)
-
-        if(localStorage.getItem('profile')==null){
-            localStorage.setItem('profile', JSON.stringify(birthdayuser));
-        }
-
         await history.push('/change');
     }
+
+
     const logout = () => {
         localStorage.removeItem('profile');
         history.push('/game');
     }
 
-    const puser = JSON.parse(localStorage.getItem("profile")); //localstorage kann nur strings speicher, objects müssen so umgeschreiben werden
+    const logstat = () => {
+        let log
+        if (puser.logged_in === true){
+            log = "ONLINE"
+        }
+        else{
+            log = "OFFLINE"
+        }
+        return log
+    }
 
-    let content = <Spinner/>;
-    if (true) { //Probably should remore the "if"... someday
         //Also, there is probably a prettier way to show all these without me manualy writing them in.. but im tired
-        content = (
+       let content = (
             <div className="game">
                 <ul className="game user-list">
-                    <div style={{cursor:"crosshair", padding:"1em"}} className="player username" >Username: {puser.username}</div>
+                    <div style={{ padding:"1em"}} className="player username" >Username: {puser.username}</div>
+                    <div style={{ padding:"1em",color:"lightblue",float:"right"}} className="player username" >id: {puser.id}</div>
                     <div className="player id">Birthday: {puser.birthday} </div>
-                    <div className="player id">Creation date: {puser.logintime}</div>
-                    <div className="player id">Status: {puser.status}</div>
+                    <div className="player id">Creation date: {puser.creation_date}</div>
+                    <div className="player id">Status: {logstat()}</div>
                 </ul>
                 <br/>
                 <Button
-                    disabled={localStorage.getItem('token')!==puser.token}
+                    disabled={localStorage.getItem('userid')!== currentid.toString()}
                     width="100%"
                     onClick={() => change()}
                 >
@@ -75,13 +76,12 @@ const Profile = () => {
                 </Button>
             </div>
         );
-    }
+
 
     return (
         <BaseContainer className="game container">
             <h2>PROFILE</h2>
             {content}
-            <img className="game image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5tIe5y2huezAN_WXwX-a4UMTfZw3TZ0nGfQ&usqp=CAU" alt="funny cat"/>
         </BaseContainer>
     );
 }
