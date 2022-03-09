@@ -71,6 +71,7 @@ const Change = () => {
         });
 
         await api.put('/users/' + localStorage.getItem('userid'),requestBirth)
+       //The Put request handles the backend and the following two functions handle the frontend
         await changename();
         await changebirth();
         history.push('/ownprofile')
@@ -110,6 +111,17 @@ const Change = () => {
         return log
     }
 
+    const prettydate = (thedate) =>{
+        if(thedate != null){
+            let p = new Date(thedate);
+            const curr_date =p.getDate();
+            const curr_month = p.getMonth() + 1; //Months are zero based
+            const curr_year = p.getFullYear();
+            return (curr_date + "-" + curr_month + "-" + curr_year);
+        }else{
+            return "Not specified";
+        }
+    }
 
 
     let content = <Spinner/>;
@@ -120,7 +132,7 @@ const Change = () => {
                     <ul className="game user-list">
                         <div className="player username">Username: {username}</div>
                         <div className="player id" > Birthday: {birthday}</div>
-                        <div className="player id" > Creation time: {changeuser.creation_date}</div>
+                        <div className="player id" > Creation time: {prettydate(changeuser.creation_date)}</div>
                         <div className="player id" > Status: {logstat()}</div>
                     </ul>
 
@@ -135,7 +147,7 @@ const Change = () => {
                     />
                     <br/>
                     <br/>
-                    <h6 style={{marginTop:"50px", marginLeft:"90px", paddingBottom:"1px", marginBottom:"1px" }}>Dont forget to apply your changes to save them!!</h6>
+                    <h6 style={{marginTop:"50px", marginLeft:"100px", paddingBottom:"1px", marginBottom:"1px", width:"100%" } }>Dont forget to apply your changes!!</h6>
                     <ApplyButton
                         className="login applybut"
                         onClick={()=>both()}>

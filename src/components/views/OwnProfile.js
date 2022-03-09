@@ -32,6 +32,18 @@ const OwnProfile = () => {
 
     const puser = JSON.parse(localStorage.getItem("profile")); //localstorage kann nur strings speicher, objects müssen so umgeschreiben werden
 
+    const prettydate = (thedate) =>{
+        if(thedate != null){
+            let p = new Date(thedate);
+            const curr_date =p.getDate();
+            const curr_month = p.getMonth() + 1; //Months are zero based
+            const curr_year = p.getFullYear();
+            return (curr_date + "-" + curr_month + "-" + curr_year);
+        }else{
+            return "Not specified";
+        }
+    }
+
     let content = <Spinner/>;
     if (true) { //Probably should remore the "if"... someday
         //Also, there is probably a prettier way to show all these without me manualy writing them in.. but im tired
@@ -40,8 +52,8 @@ const OwnProfile = () => {
                 <ul className="game user-list">
                     <div style={{ padding:"1em"}} className="player username" >Username: {username}</div>
                     <div style={{ padding:"1em",color:"lightblue",float:"right"}} className="player username" >id: {puser.id}</div>
-                    <div className="player id">Birthday: {birthday} </div>
-                    <div className="player id">Creation date: {puser.creation_date}</div>
+                    <div className="player id">Birthday: {prettydate(birthday)} </div>
+                    <div className="player id">Creation date: {prettydate(puser.creation_date)}</div>
                     <div className="player id">Status: {logstat()}</div>
                 </ul>
 

@@ -45,6 +45,12 @@ const Start = () => {
                     <br/>
                 </div>
             </div>
+
+            <div className="login container">
+
+                    <img className="game image" src="https://www.wandtattoo.de/images/product_images/original_images/5780_4-wandtattoo-hello-welcome-farbe.png" float="left" width="350px" style={{marginTop:"6px", flex:"auto"}} alt="funny cat"/>
+
+            </div>
         </BaseContainer>
     );
 };

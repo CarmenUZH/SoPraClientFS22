@@ -93,6 +93,21 @@ const Register = props => {
                     </div>
                 </div>
             </div>
+            <br/>
+            <div className="login container">
+                <div className="login form">
+                    <div className="login button-container">
+                        <Button
+                            width="10em"
+                            style={{justifySelf:"center", }}
+                            onClick={() => history.push(`/start`)}
+                        >
+                            Back
+                        </Button>
+                    </div>
+                </div>
+            </div>
+
         </BaseContainer>
     );
 };

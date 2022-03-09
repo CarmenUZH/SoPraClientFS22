@@ -55,6 +55,24 @@ const FormField = props => {
     );
 };
 
+const FormFieldPass = props => {
+    return (
+        <div className="login fieldlogin">
+            <label className="login label">
+                {props.label}
+            </label>
+            <input
+                className="login input"
+                placeholder="enter here.."
+                type="password"
+                value={props.value}
+                onChange={e => props.onChange(e.target.value)}
+            />
+        </div>
+    );
+};
+
+
 FormField.propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
@@ -102,14 +120,14 @@ return (
     <BaseContainer>
         <div className="login container">
             <div className="login form">
-                <img className="game image" src="https://t3.ftcdn.net/jpg/03/74/30/62/360_F_374306203_SMTL4De1OOWASFLtO0tkmXvEatxwf4Ry.jpg" float="left" height="150px" style={{marginTop:"6px"}} alt="funny cat"/>
+                <img className="game image" src="https://t3.ftcdn.net/jpg/03/74/30/62/360_F_374306203_SMTL4De1OOWASFLtO0tkmXvEatxwf4Ry.jpg" float="left" height="100px" style={{marginTop:"6px", flex:"auto"}} alt="funny cat"/>
 
                 <FormField
                     label="Ender Username"
                     value={username}
                     onChange={un => setUsername(un)}
                 />
-                <FormField
+                <FormFieldPass //so that the user doesnt see his password when he tries to log in
                     label="Enter password"
                     value={password}
                     onChange={n => setPassword(n)}
@@ -123,10 +141,29 @@ return (
                     >
                         Login
                     </Button>
+
+
+
                 </div>
             </div>
         </div>
+        <br/>
+        <div className="login container">
+            <div className="login form">
+                <div className="login button-container">
+            <Button
+                width="10em"
+                style={{justifySelf:"center", }}
+                onClick={() => history.push(`/start`)}
+            >
+                Back
+            </Button>
+            </div>
+            </div>
+        </div>
+
     </BaseContainer>
+
 );
 };
 
