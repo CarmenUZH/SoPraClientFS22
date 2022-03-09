@@ -50,8 +50,8 @@ const OwnProfile = () => {
         content = (
             <div className="game">
                 <ul className="game user-list">
-                    <div style={{ padding:"1em"}} className="player username" >Username: {username}</div>
-                    <div style={{ padding:"1em",color:"lightblue",float:"right"}} className="player username" >id: {puser.id}</div>
+                    <div style={{ padding:"1em", paddingRight:"200px"}} className="player username" >Username: {username}</div>
+                    <div style={{paddingLeft:"200px", padding:"1em",color:"lightblue",float:"right"}} className="player username" >id: {puser.id}</div>
                     <div className="player id">Birthday: {prettydate(birthday)} </div>
                     <div className="player id">Creation date: {prettydate(puser.creation_date)}</div>
                     <div className="player id">Status: {logstat()}</div>
