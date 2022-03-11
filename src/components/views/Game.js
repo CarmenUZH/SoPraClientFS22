@@ -35,7 +35,6 @@ const Game = () => {
         localStorage.setItem('tem', person.birthday)
         localStorage.setItem('nem', person.username)
         localStorage.setItem('profile', JSON.stringify(person))
-        console.log(JSON.parse(localStorage.getItem('profile')))
         history.push('/profile');
 
     }
@@ -43,7 +42,6 @@ const Game = () => {
   const [users, setUsers] = useState(null);
 
     const logout = async () => {
-      console.log('testing log')
         console.log(localStorage.getItem('userid'))
       //We first get the logged in user with his token, then we log him out
         var stringid = localStorage.getItem("userid")
