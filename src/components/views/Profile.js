@@ -20,11 +20,7 @@ const Profile = () => {
     const change = async () => {
         console.log('testing change')
 
-        const requestBody = JSON.stringify({
-            username: puser.username}); //We have to stringify Requests for api
-
-        console.log(requestBody)
-        const response= await api.get( '/users/' + localStorage.getItem( "userid") ,requestBody);
+        const response= await api.get( '/users/' + localStorage.getItem( "userid"));
         const logged = new User(response.data); //New user is created that is basicaly the copy of the user you got from the server
         localStorage.setItem('changer', JSON.stringify(logged));
 

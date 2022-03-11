@@ -63,7 +63,7 @@ const Change = () => {
         history.push('/game');
     }
     const both = async () => {
-        console.log(birthday) //test functionality
+      try{  console.log(birthday) //test functionality
         //We first get the logged in user with his token, then we log him out
         const requestBirth = JSON.stringify({
             birthday: birthday,
@@ -76,7 +76,9 @@ const Change = () => {
         await changebirth();
         history.push('/ownprofile')
 
-    }
+    }catch (error) {
+          alert(`Something went wrong during the change: \n${handleError(error)}`);
+      }}
     const changebirth = async () => {
         const borthday =  await api.get('/users/' + localStorage.getItem('userid'))
         const borthdayuser = new User(borthday.data);
